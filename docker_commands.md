@@ -21,13 +21,13 @@ docker volume create fastapi-db
 ### Build the image
 
 ```bash
-
+docker build -t shopping-server1:v1
 ```
 
 ### Run the container
 
 ```bash
-
+docker run -d --name server1-container -p 8000:8000 --mount source=fastapi-db,target=/app/db shopping-server1:v1
 ```
 
 ## Server 2
@@ -35,12 +35,12 @@ docker volume create fastapi-db
 ### Build the image
 
 ```bash
-
+docker build -t shopping-server2:v1
 ```
 
 ### Run the container
 
 ```bash
-
+docker run -d --name server2-container -p 8080:8080 --mount source=fastapi-db,target=/app/db shopping-server2:v1
 ```
 
