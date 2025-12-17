@@ -2,10 +2,11 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from pathlib import Path
 import json
+import uvicorn
 
 app = FastAPI()
 
-# DB_PATH = Path("db/shopping_list.json")
+DB_PATH = Path("db/shopping_list.json")
 
 class Item(BaseModel):
     id: int
@@ -14,13 +15,13 @@ class Item(BaseModel):
 
 def load_database() -> list:
     try:
-        with open("shopping_list.json", "r") as f:
+        with open(DB_PATH, "r") as f:
             return json.load(f)
     except json.JSONDecodeError:
         raise ValueError("Database file is not valid JSON.")
 
 def save_database(data: list) -> None:
-    with open("shopping_list.json", "w") as f:
+    with open(DB_PATH, "w") as f:
         json.dump(data, f, indent=2)
 
 @app.get("/items")
@@ -40,3 +41,5 @@ def add_item(name, quantity):
             "item id": item_id,
             "new item": new_item}
 
+if __name__ == "__main__":
+    uvicorn.run(app, host = 0.0.0.0, port = 8000)
